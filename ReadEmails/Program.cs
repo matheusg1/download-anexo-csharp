@@ -16,19 +16,16 @@ namespace ReadEmails
         {
             SetupEncoding();
 
-            var manager = new MailManager();
-            manager._passwordFile = @"C:\Users\Matheus\Desktop\Senha.txt";
-            manager._host = "outlook.office365.com";
-            manager._email = "tecmatheusg@hotmail.com";
-            manager._port = 995;
-            manager._ssl = true;
+            var passwordFile = @"C:\Users\Matheus\Desktop\Senha.txt";
+            var host = "outlook.office365.com";
+            var email = "tecmatheusg@hotmail.com";
+            var port = 995;
+            var ssl = true;
+            var manager = new MailManager(host, email, passwordFile, port, ssl);
 
-            string sender = "matheusmt021 @gmail.com";
+            string sender = "matheusmt021@gmail.com";
             //string subject = "img2";
-
-            List<Message> messageList = manager.GetEmails();
-
-            List<Message> filteredMessages = manager.FilterBySender(sender);                        
+            List<Message> filteredMessages = manager.FilterBySenderAndSubject(sender, "img2");                        
            
             string destinationFolder = @"C:\Users\Matheus\Desktop";
             string fileNameWithExtension = "1222.png";

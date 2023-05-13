@@ -19,10 +19,6 @@ namespace ReadEmails
         public bool _ssl { get; set; }
         public List<Message> _messageList { get; set; }
 
-        public MailManager()
-        {
-        }
-
         public MailManager(string host, string email, string passwordFile, int port, bool ssl)
         {
             _host = host;
@@ -98,6 +94,9 @@ namespace ReadEmails
             foreach (var attachment in attachments)
             {
                 string filePath = Path.Combine(destinationFolder, attachment.FileName);
+
+                if (File.Exists(filePath)) throw new Exception("File already exists");
+
                 if (attachment.FileName.Equals(fileNameWithExtension))
                 {
                     FileStream Stream = new FileStream(filePath, FileMode.Create);
