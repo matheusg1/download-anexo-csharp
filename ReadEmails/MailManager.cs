@@ -12,32 +12,32 @@ namespace ReadEmails
 {
     public class MailManager
     {
-        public string _host { get; set; }
-        public string _email { get; set; }
-        public string _passwordFile { get; set; }
-        public int _port { get; set; }
-        public bool _ssl { get; set; }
-        public List<Message> _messageList { get; set; }
+        public string Host { get; set; }
+        public string Email { get; set; }
+        public string PasswordFile { get; set; }
+        public int Port { get; set; }
+        public bool Ssl { get; set; }
+        public List<Message> MessageList { get; set; }
 
         public MailManager(string host, string email, string passwordFile, int port, bool ssl)
         {
-            _host = host;
-            _email = email;
-            _passwordFile = passwordFile;
-            _port = port;
-            _ssl = ssl;
-            _messageList = GetEmails();
+            Host = host;
+            Email = email;
+            PasswordFile = passwordFile;
+            Port = port;
+            Ssl = ssl;
+            MessageList = GetEmails();
         }
 
         public List<Message> GetEmails()
         {
-            string password = File.ReadAllText(_passwordFile);
+            string password = File.ReadAllText(PasswordFile);
             try
             {
                 using (Pop3Client _client = new())
                 {
-                    _client.Connect(_host, _port, _ssl);
-                    _client.Authenticate(_email, password);
+                    _client.Connect(Host, Port, Ssl);
+                    _client.Authenticate(Email, password);
 
                     int messageCount = _client.GetMessageCount();
 
@@ -64,19 +64,19 @@ namespace ReadEmails
 
         public List<Message> FilterBySender(string sender)
         {
-            return _messageList.Where(x => x.Headers.From.Address == sender).ToList();
+            return MessageList.Where(x => x.Headers.From.Address == sender).ToList();
         }
 
         public List<Message> FilterBySubject(string subject)
         {
-            return _messageList.Where(x => x.Headers.Subject.ToLower()
+            return MessageList.Where(x => x.Headers.Subject.ToLower()
                 .Contains(subject.ToLower()))
                 .ToList();
         }
 
         public List<Message> FilterBySenderAndSubject(string sender, string subject)
         {
-            return _messageList.Where(x => x.Headers.From.Address == sender &&
+            return MessageList.Where(x => x.Headers.From.Address == sender &&
                 x.Headers.Subject.ToLower()
                 .Contains(subject.ToLower()))
                 .ToList();
